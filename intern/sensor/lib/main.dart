@@ -78,14 +78,14 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  shake(int num) {
+  Widget shake(int num) {
     if (num == 0) {
-      Text(
+      return Text(
         "움직임이 감지되지 않았습니다.",
         style: TextStyle(color: primaryColor),
       );
     } else {
-      Image.asset('asset/img/$num.png');
+      return Image.asset('asset/img/$num.png');
     }
   }
 
@@ -96,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('asset/img/$img_num.png'),
+            shake(img_num),
             SizedBox(
               height: 30,
             ),
