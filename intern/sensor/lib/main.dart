@@ -1,10 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:sensor/const/colors.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
 void main() {
   runApp(MaterialApp(
+    theme: ThemeData(
+      scaffoldBackgroundColor: backgroundColor,
+    ),
     home: MyHomePage(),
   ));
 }
@@ -29,39 +33,60 @@ class _MyHomePageState extends State<MyHomePage> {
   int gy = 2;
   int gz = 2;
 
+  int img_num = 1;
+
   @override
   void initState() {
     super.initState();
-    Timer.periodic(Duration(seconds: 1), (timer) {
-      setState(() {
-        sense();
-      });
-    });
-
+    // Timer.periodic(Duration(seconds: 1), (timer) {
+    //   setState(() {
+    //     sense();
+    //   });
+    // });
   }
 
-  sense(){
-    accelerometerEvents.listen((event) {
-      ax = event.x.toInt();
-      ay = event.y.toInt();
-      az = event.z.toInt();
-
-    });
+  sense() {
+    // accelerometerEvents.listen((event) {
+    //   ax = event.x.toInt();
+    //   ay = event.y.toInt();
+    //   az = event.z.toInt();
+    //
+    // });
     // print("ac : $ax / $ay / $az");
-    userAccelerometerEvents.listen((event) {
-      ux = event.x.toInt();
-      uy = event.y.toInt();
-      uz = event.z.toInt();
+    Future.delayed(Duration(seconds: 3), () {
+      userAccelerometerEvents.listen((event) {
+        ux = event.x.toInt();
+        uy = event.y.toInt();
+        uz = event.z.toInt();
+      });
+      gyroscopeEvents.listen((event) {
+        gx = event.x.toInt();
+        gy = event.y.toInt();
+        gz = event.z.toInt();
+      });
+      img_num = ux + uy + uz + gx + gy + gz;
 
-    });
-    print("ur : $ux / $uy / $uz");
-    gyroscopeEvents.listen((event) {
-      gx = event.x.toInt();
-      gy = event.y.toInt();
-      gz = event.z.toInt();
+      print(img_num);
+      if (img_num <= 0) {
+        img_num *= (-1);
+      }
+      if (img_num > 6) {
+        img_num = img_num % 6;
+      }
 
+      setState(() {});
     });
-    print("gy : $gx / $gy / $gz");
+  }
+
+  shake(int num) {
+    if (num == 0) {
+      Text(
+        "움직임이 감지되지 않았습니다.",
+        style: TextStyle(color: primaryColor),
+      );
+    } else {
+      Image.asset('asset/img/$num.png');
+    }
   }
 
   @override
@@ -71,17 +96,24 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("ax: $ax"),
-            Text("ay: $ay"),
-            Text("az: $az"),
-            SizedBox(height: 30,),
-            Text("ux: $ux"),
-            Text("uy: $uy"),
-            Text("uz: $uz"),
-            SizedBox(height: 30,),
-            Text("gx: $gx"),
-            Text("gy: $gy"),
-            Text("gz: $gz"),
+            Image.asset('asset/img/$img_num.png'),
+            SizedBox(
+              height: 30,
+            ),
+            Text(
+              "숫자: $img_num",
+              style: TextStyle(color: primaryColor),
+            ),
+            SizedBox(
+              height: 30,
+            ),
+            ElevatedButton(
+                onPressed: sense,
+                child: Text(
+                  '주사위 굴리기',
+                  style: TextStyle(
+                      color: primaryColor),
+                )),
           ],
         ),
       ),
