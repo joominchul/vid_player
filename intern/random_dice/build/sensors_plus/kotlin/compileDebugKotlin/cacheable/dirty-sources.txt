@@ -1,0 +1,2 @@
+C:\Users\jmc98\AppData\Local\Pub\Cache\hosted\pub.dev\sensors_plus-4.0.0\android\src\main\kotlin\dev\fluttercommunity\plus\sensors\StreamHandlerImpl.kt
+C:\Users\jmc98\AppData\Local\Pub\Cache\hosted\pub.dev\sensors_plus-4.0.0\android\src\main\kotlin\dev\fluttercommunity\plus\sensors\SensorsPlugin.kt
